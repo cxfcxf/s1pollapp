@@ -1,0 +1,45 @@
+<%- include header %>
+<!--- <script>
+i = 2;
+function addchoice() {
+	document.getElementById('choice').innerHTML += "<br /><input type='text' class='form-control' placeholder='选项 "+ i +"'  name='choice_" + i + "'/>";
+	i++;
+}
+
+function removechoice() {
+		document.getElementById('choice').innerHTML = ""
+		i = 2;
+}
+
+</script>
+-->
+<div class="page-header">
+  <h1>新增投票</h1>
+</div>
+
+<form role="form" method="post">
+  <div class="form-group">
+    <label>问题</label>
+    <input type="text" class="form-control" placeholder="问题" name="question">
+  </div>
+  <div class="form-group">
+    <label>选择</label>
+    <textarea class="form-control" rows="10" placeholder="请填入投票选项, 每行一项" name="choices"></textarea>
+    </div>
+  </div>
+<br />
+<br />
+<br />
+          <p><hr></p>
+<div class="row">
+	<div class="col-xs-6">
+        <a href="/" class="btn btn-default" role="button"><span class="glyphicon glyphicon-arrow-left"></span>返回首页</a>
+    </div>
+    <div class="col-xs-6">
+        <button class="btn btn-primary pull-right" type="submit">发起投票 &raquo;</button>
+    </div>
+</div>
+</form>
+
+
+<%- include footer %>

@@ -1,0 +1,78 @@
+<%- include header %>
+
+<div class="page-header">
+  <h1>查看投票</h1>
+</div>
+
+
+<div class="well well-lg">
+  <strong>问题</strong> <p class="pull-right"><em>由 <%= cn %> 发起</em></p><br />
+  <%= qu %>
+</div>
+
+<% if (vcount) { %>
+<p class="lead">投票结果如下:</p>
+
+<% for ( var n in ch ) { %>
+
+	<% var tt = ((ch[n].username.length/vcount)*100).toFixed(2) + '%' %>
+	<div class="progress">
+  	<div class="progress-bar  progress-bar-info" style="width: <%= tt %>;"><p class="text-danger"><strong><%= ch[n].choice %></strong></p>
+  </div>
+</div>
+</div>
+<div class="well">
+	该项投票用户: <%= ch[n].username %>
+</div>
+</div>
+
+<% } %>
+
+
+<em>您已经投过票了, 总共有<%= vcount %>位用户已经投票</em>
+
+<p><hr></p>
+<div class="row">
+	<div class="col-xs-6">
+        <a href="/" class="btn btn-default" role="button"><span class="glyphicon glyphicon-arrow-left"></span>返回首页</a>
+    </div>
+    <% if ( uc == cn ) { %>
+    <div class="col-xs-6">
+        <a href="/delete/<%= id %>" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-remove"></span>移除该投票</a>
+  </div>
+  <% } %>
+</div>
+
+<% } else { %>
+<p class="lead">请选择下列选项:</p>
+
+<form role="form" method="post">
+<ul>
+ <% for ( var n in ch ) { %>
+ 	<input type="radio" name="choice" value="<%= ch[n].id %>">   <%= ch[n].choice %><br />
+ <% } %>
+</ul>
+
+<p><hr></p>
+<div class="row">
+	<div class="col-xs-6">
+        <a href="/" class="btn btn-default" role="button"><span class="glyphicon glyphicon-arrow-left"></span>返回首页</a>
+    </div>
+    <div class="col-xs-6">
+        <button class="btn btn-primary pull-right" type="submit">投票</button>
+    </div>
+
+</div>
+</form>
+<p><hr></p>
+<div class="row">
+<% if ( uc == cn ) { %>
+    <div class="col-xs-6">
+        <a href="/delete/<%= id %>" class="btn btn-primary"><span class="glyphicon glyphicon-remove"></span>移除该投票</a>
+  </div>
+<% } %>
+</div>
+<% } %>
+
+
+<%- include footer %>
