@@ -1,5 +1,16 @@
 <%- include header %>
 
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#myTags").tagit({
+          allowSpaces: true,
+          singleField: true,
+          placeholderText: "请输入标签",
+          maxTags: 8
+        });
+    });
+</script>
+
 <div class="page-header">
   <h1>查看投票</h1>
 </div>
@@ -9,6 +20,14 @@
   <strong>问题</strong> <p class="pull-right"><em>由 <%= cn %> 发起</em></p><br />
   <%= qu %>
 </div>
+
+<form method="post">
+    <label>标签</label>
+    <input type="text" id="myTags" name="tags" value="<%= tags %>"/>
+    <button class="btn pull-right" type="submit">更新标签</button>
+</form>
+<br>
+<br>
 
 <% if (vcount) { %>
 <p class="lead">投票结果如下:</p>
@@ -31,6 +50,7 @@
 
 <em>您已经投过票了, 总共有<%= vcount %>位用户已经投票</em>
 
+
 <p><hr></p>
 <div class="row">
 	<div class="col-xs-6">
@@ -43,6 +63,7 @@
   <% } %>
 </div>
 
+
 <% } else { %>
 <p class="lead">请选择下列选项:</p>
 
@@ -52,6 +73,7 @@
  	<input type="radio" name="choice" value="<%= ch[n].id %>">   <%= ch[n].choice %><br />
  <% } %>
 </ul>
+
 
 <p><hr></p>
 <div class="row">
@@ -64,6 +86,7 @@
 
 </div>
 </form>
+
 <p><hr></p>
 <div class="row">
 <% if ( uc == cn ) { %>
@@ -72,6 +95,8 @@
   </div>
 <% } %>
 </div>
+
+
 <% } %>
 
 

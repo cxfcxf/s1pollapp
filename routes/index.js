@@ -13,7 +13,7 @@ function checkLogin(req, res, next) {
 
 function checkNotLogin(req, res, next) {
   if (req.session.user) {
-    req.flash('error', '已登录!'); 
+    req.flash('error', '您已登录!'); 
     res.redirect('back');
   }
   next();
@@ -51,6 +51,9 @@ module.exports = function(app) {
         choicesnew.push({choice: c1[el], username: []});
       };
     };
+    var tagarray = req.body.tags.split(',');
+
+    console.log(tagarray);
 
     if (choicesnew.length <= 1) {
       req.flash('error', '投票只有一个选项, 请使用起码2个选项');
@@ -58,11 +61,11 @@ module.exports = function(app) {
     };
 
 
-
     var newPoll = new Poll({
       creatorname: req.session.user.username,
       question: req.body.question,
-      choices: choicesnew
+      choices: choicesnew,
+      tags: tagarray
     });
 
     //console.log(newPoll);
@@ -101,11 +104,11 @@ module.exports = function(app) {
         if (uservoted.indexOf(req.session.user.username) != -1) {
           // voted
           // console.log(choi);
-          res.render('viewpoll', { title: '投票', id: id, qu: poll.question, uc: req.session.user.username, cn: poll.creatorname, ch: choi, vcount: uservoted.length, user: req.session.user, success: req.flash('success').toString(),
+          res.render('viewpoll', { title: '投票', tags: poll.tags, id: id, qu: poll.question, uc: req.session.user.username, cn: poll.creatorname, ch: choi, vcount: uservoted.length, user: req.session.user, success: req.flash('success').toString(),
       error: req.flash('error').toString() });  
 
         } else {
-          res.render('viewpoll', { title: '投票', id: id, qu: poll.question, uc: req.session.user.username, cn: poll.creatorname, ch: choi, vcount: null, user: req.session.user, success: req.flash('success').toString(),
+          res.render('viewpoll', { title: '投票', tags: poll.tags, id: id, qu: poll.question, uc: req.session.user.username, cn: poll.creatorname, ch: choi, vcount: null, user: req.session.user, success: req.flash('success').toString(),
       error: req.flash('error').toString() });
         };
     };
@@ -120,8 +123,13 @@ module.exports = function(app) {
         username = req.session.user.username,
         pid = req.params.id;
 
+    if (req.body.tags) {
+      var tags = req.body.tags.split(",");
+    } else {
+      var tags = "noupdate";
+    }
 
-    Poll.update(pid, sid, username, function (err, poll) {
+    Poll.update(pid, sid, username, tags, function (err, poll) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/viewpoll/:id');

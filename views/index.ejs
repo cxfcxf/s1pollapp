@@ -1,8 +1,8 @@
 <%- include header %>
-  <body>
-  	<div class="page-header">
-    	<h1>所有投票</h1>
-	</div>
+
+<div class="page-header">
+    <h1>所有投票</h1>
+</div>
  <div class="row">
  	<div class="col-xs-5">
       <a href="/newpoll" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span>增加投票</a>
@@ -19,6 +19,5 @@ placeholder="查找TAG">
  	<li><a href="/viewpoll/<%= polls[poll]._id %>"><%= polls[poll].question %></a></li>
  <% } %>
 </ul>
-
 
 <%- include footer %>

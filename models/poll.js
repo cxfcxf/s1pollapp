@@ -9,6 +9,7 @@ var choiceSchme = new mongoose.Schema({
 var pollSchema = new mongoose.Schema({
   creatorname: String,
   question: String,
+  tags: Array,
   choices: [choiceSchme]
 }, {
   collection: 'polls'
@@ -22,13 +23,15 @@ function Poll(user) {
 	this.creatorname = user.creatorname;
 	this.question = user.question;
 	this.choices = user.choices
+	this.tags = user.tags
 };
 
 Poll.prototype.save = function(callback) {
 	var poll = {
 		creatorname: this.creatorname,
 		question: this.question,
-		choices: this.choices
+		choices: this.choices,
+		tags: this.tags
 	}
 
 	var pol = new pollModel(poll);
@@ -60,15 +63,30 @@ Poll.listq = function(callback) {
 	});
 };
 
-Poll.update = function(pid, sid, username, callback) {
-
-	pollModel.update({_id: pid, "choices._id": sid}, {$addToSet: {"choices.$.username": username} }, function (err, poll) {
+Poll.update = function(pid, sid, username, tags, callback) {
+	pollModel.findOne({_id: pid}, function (err, poll) {
 		if (err) {
 			return callback(err);
 		};
-		callback(null, poll);
-
+		if (tags != poll.tags && tags != "noupdate") {
+			pollModel.update({_id:pid}, {$set: {tags: tags} }, function (err, poll) {
+				if (err) {
+					return callback(err);
+				};
+				callback(null, poll);
+			});
+		} else {
+			pollModel.update({_id: pid, "choices._id": sid}, {$addToSet: {"choices.$.username": username} }, function (err, poll) {
+				if (err) {
+					return callback(err);
+				};
+				callback(null, poll);
+			});
+		};
 	});
+
+
+	
 };
 
 Poll.remove = function(pid, username, callback) {
